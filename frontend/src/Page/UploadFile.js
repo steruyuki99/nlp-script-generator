@@ -1,7 +1,6 @@
 import { Container, Typography, Box, TextField, Button } from "@mui/material";
 import axios from "axios";
 import React, { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 
 const UploadFile = () => {
   const fileTypes = ["mp3"];

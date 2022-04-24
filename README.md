@@ -10,6 +10,7 @@ npm install ibm-watson@^7.0.0
 npm i axios
 npm install react-router-dom
 npm i --save react-drag-drop-files
+npm install firebase
 
 #### Materail-UI Package
 npm install @mui/material @emotion/react @emotion/styled

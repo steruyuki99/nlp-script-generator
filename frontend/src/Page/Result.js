@@ -12,19 +12,15 @@ export default function Result() {
     <Container>
       <Box
         sx={{
-        marginBottom: 4,
+          marginBottom: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-          <Typography
-            variant="h4"
-            component="h5"
-            sx={{ m: 3}}
-          >
-            Minutes
-          </Typography>
+        <Typography variant="h4" component="h5" sx={{ m: 3 }}>
+          Minutes
+        </Typography>
         <TableContainer component={Paper} sx={{ maxWidth: 800 }}>
           <Table aria-label="simple table">
             <TableBody>
@@ -37,11 +33,10 @@ export default function Result() {
               <TableRow>
                 <TableCell variant="head">Date</TableCell>
                 <TableCell>24/4/2022</TableCell>
-              </TableRow>{" "}
+              </TableRow>
               <TableRow>
                 <TableCell variant="head">Description</TableCell>
                 <TableCell>
-                  {" "}
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent placerat mattis tortor, eu condimentum dolor
                   fringilla non. Sed vitae neque erat. Donec purus lectus,
@@ -51,7 +46,6 @@ export default function Result() {
               <TableRow>
                 <TableCell variant="head">Generated Text</TableCell>
                 <TableCell>
-                  {" "}
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Praesent placerat mattis tortor, eu condimentum dolor
                   fringilla non. Sed vitae neque erat. Donec purus lectus,

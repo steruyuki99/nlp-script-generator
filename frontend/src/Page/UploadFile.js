@@ -1,9 +1,18 @@
-import { Container, Typography, Box, TextField, Button } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
+import {
+  Container,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Grid,
+} from "@mui/material";
+import axios from "axios";
+//import firebase
+import { db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 const UploadFile = () => {
-  const fileTypes = ["mp3"];
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState();
@@ -17,41 +26,92 @@ const UploadFile = () => {
     setTitle(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    console.log("Submit button");
-  };
-
   const saveFile = (e) => {
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
   };
 
-  const uploadFile = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("fileName", fileName);
-    try {
-      const res = await axios.post("http://localhost:8000/upload", formData);
-      console.log(res);
-      console.log(res.data.results);
-      setGeneratedText(res.data.results);
-    } catch (ex) {
-      console.log(ex);
+  // const uploadFile = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //   formData.append("fileName", fileName);
+  //   try {
+  //     const res = await axios.post("http://localhost:8000/upload", formData);
+  //     console.log(res);
+  //     console.log(res.data.results);
+  //     setGeneratedText(res.data.results);
+  //   } catch (ex) {
+  //     console.log(ex);
+  //   }
+  // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Submit button");
+
+    function GenerateText() {
+      return new Promise((resolve) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", fileName);
+        axios
+          .post("http://localhost:8000/upload", formData)
+          .then((res) => {
+            setGeneratedText(res.data.results);
+            console.log(res.data.resolve)
+            resolve(res.data.resolve);
+          })
+          .catch((err) => {
+            console.log("error on upload file: ", err);
+          });
+      });
     }
+
+    function UploadText(gText) {
+      return new Promise((resolve) => {
+        const sendTime = new Date();
+        const timed = sendTime.getHours() + ":" + sendTime.getMinutes();
+        const day =
+          sendTime.getDate() +
+          "/" +
+          (sendTime.getMonth() + 1) +
+          "/" +
+          sendTime.getFullYear();
+        const time = day + " " + timed;
+        console.log(gText);
+        addDoc(collection(db, "minutes"), {
+          date: time,
+          description: description,
+          minutesText: generatedText,
+          title: title,
+        })
+          .then((response) => {
+            console.log("Document ID", response.id);
+            resolve(response.id);
+          })
+          .catch((err) => {
+            console.log("Firebase Error: ", err);
+          });
+      });
+    }
+
+    GenerateText()
+      .then((gText) => {
+        console.log(gText);
+        return UploadText(gText);
+      })
+      .then((docID) => {
+        console.log(docID);
+      });
   };
 
   return (
-    <Container component="section" maxWidth="lg">
+    <Container component="section" maxWidth="md">
       <Typography variant="h3" component="h2" sx={{ m: 3 }}>
         Upload File
-      </Typography>
-      <Box
-        component="form"
-        noValidate
-        sx={{ m: 4, mt: 1 }}
-        onSubmit={uploadFile}
-      >
+      </Typography>{" "}
+      <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
         <TextField
           margin="normal"
           required
@@ -104,7 +164,6 @@ const UploadFile = () => {
           Upload FIle
         </Button>
       </Box>
-
       <Typography variant="" component="h2" sx={{ m: 3 }}>
         {generatedText}
       </Typography>

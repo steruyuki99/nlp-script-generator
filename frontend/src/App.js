@@ -7,6 +7,7 @@ import Register from "./Page/Register";
 import UploadFile from "./Page/UploadFile";
 import Userprofile from "./Page/UserProfile";
 import LandingPage from "./Page/LandingPage";
+import Result from "./Page/Result";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="upload" element={<UploadFile />} />
             <Route path="userprofile" element={<Userprofile />} />
+            <Route path="result" element={<Result />} />
           </Routes>
       </BrowserRouter>
     </div>

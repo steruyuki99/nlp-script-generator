@@ -1,6 +1,6 @@
 import "./App.css";
 //router
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import ListMeeting from "./Page/ListMeeting";
@@ -13,16 +13,16 @@ import Result from "./Page/Result";
 function App() {
   return (
     <div className="App">
-      <Header />
       <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<SignIn />} />
-            <Route path="list/:minutesID" element={<Result />} />
-            <Route path="list" element={<ListMeeting />} />
-            <Route path="register" element={<Register />} />
-            <Route path="upload" element={<UploadFile />} />
-            <Route path="userprofile" element={<Userprofile />} />
-          </Routes>
+        <Header />
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="list/:minutesID" element={<Result />} />
+          <Route path="list" element={<ListMeeting />} />
+          <Route path="register" element={<Register />} />
+          <Route path="upload" element={<UploadFile />} />
+          <Route path="userprofile" element={<Userprofile />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

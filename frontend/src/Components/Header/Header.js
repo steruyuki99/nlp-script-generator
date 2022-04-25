@@ -1,140 +1,178 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Drawer,
+  Link,
+  MenuItem,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
+import React, { useState, useEffect } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
-const pages = ['List Minutes of Meeting', 'Profile'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const headersData = [
+  {
+    label: "Minutes List",
+    href: "/list",
+  },
+  {
+    label: "Profile",
+    href: "/userprofile",
+  }
+];
 
-const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+const useStyles = makeStyles(() => ({
+  header: {
+    backgroundColor: "#400CCC",
+    paddingRight: "79px",
+    paddingLeft: "118px",
+    height: "10vh",
+    "@media (max-width: 900px)": {
+      height: "8vh",
+      paddingLeft: 0,
+    },
+  },
+  logo: {
+    fontFamily: "Work Sans, sans-serif",
+    fontWeight: 600,
+    color: "#FFFEFE",
+    textAlign: "left",
+  },
+  menuButton: {
+    fontFamily: "Open Sans, sans-serif",
+    fontWeight: 700,
+    size: "18px",
+    marginLeft: "38px",
+  },
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  drawerContainer: {
+    padding: "20px 30px",
+  },
+}));
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+export default function Header() {
+  const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
+
+  const [state, setState] = useState({
+    mobileView: false,
+    drawerOpen: false,
+  });
+
+  const { mobileView, drawerOpen } = state;
+
+  useEffect(() => {
+    const setResponsiveness = () => {
+      return window.innerWidth < 900
+        ? setState((prevState) => ({ ...prevState, mobileView: true }))
+        : setState((prevState) => ({ ...prevState, mobileView: false }));
+    };
+
+    setResponsiveness();
+
+    window.addEventListener("resize", () => setResponsiveness());
+
+    return () => {
+      window.removeEventListener("resize", () => setResponsiveness());
+    };
+  }, []);
+
+  const displayDesktop = () => {
+    return (
+      <Toolbar className={toolbar}>
+        {minutesLogo}
+        <div>{getMenuButtons()}</div>
+      </Toolbar>
+    );
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+
+  const displayMobile = () => {
+    const handleDrawerOpen = () =>
+      setState((prevState) => ({ ...prevState, drawerOpen: true }));
+    const handleDrawerClose = () =>
+      setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+    return (
+      <Toolbar>
+        <IconButton
+          {...{
+            edge: "start",
+            color: "inherit",
+            "aria-label": "menu",
+            "aria-haspopup": "true",
+            onClick: handleDrawerOpen,
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+
+        <Drawer
+          {...{
+            anchor: "left",
+            open: drawerOpen,
+            onClose: handleDrawerClose,
+          }}
+        >
+          <div className={drawerContainer}>{getDrawerChoices()}</div>
+        </Drawer>
+
+        <div>{minutesLogo}</div>
+      </Toolbar>
+    );
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const getDrawerChoices = () => {
+    return headersData.map(({ label, href }) => {
+      return (
+        <Link
+          {...{
+            component: RouterLink,
+            to: href,
+            color: "inherit",
+            style: { textDecoration: "none" },
+            key: label,
+          }}
+        >
+          <MenuItem>{label}</MenuItem>
+        </Link>
+      );
+    });
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const minutesLogo = (
+    <Typography variant="h6" component="h1" className={logo}>
+      Minutes Of Meeting Generator
+    </Typography>
+  );
+
+  const getMenuButtons = () => {
+    return headersData.map(({ label, href }) => {
+      return (
+        <Button
+          {...{
+            key: label,
+            color: "inherit",
+            to: href,
+            component: RouterLink,
+            className: menuButton,
+          }}
+        >
+          {label}
+        </Button>
+      );
+    });
   };
 
   return (
-    <AppBar position="static" sx={{ height: "10vh" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-          >
-            NLP Minutes of Meeting
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-          >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex'  }, justifyContent: 'flex-end' }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <header>
+      <AppBar className={header} >
+        {mobileView ? displayMobile() : displayDesktop()}
+      </AppBar>
+    </header>
   );
-};
-export default Header;
+}

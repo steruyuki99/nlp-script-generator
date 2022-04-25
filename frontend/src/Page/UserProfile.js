@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,21 +12,43 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Userprofile() {
+  const [user, setUser] = useState("");
   let navigate = useNavigate();
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const userDetailed = auth.currentUser;
+    console.log(userDetailed);
+    if (userDetailed) {
+      console.log(userDetailed);
+      console.log(userDetailed.displayName);
+      setUser(userDetailed);
+      setUsername(user.displayName);
+    } else{
+      navigate("../");
+    }
+    console.log(username);
+    console.log(user.email);
+  }, []);
+
+  const usernameChangeHandler = (event) => {
+    setUsername(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    updateProfile(user,{
+      displayName: username,
+    }).then(()=>{
+      navigate("../userprofile");
+    })
   };
 
   const logout = async () => {
@@ -35,7 +57,7 @@ export default function Userprofile() {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="sm" sx={{marginTop: "13vh"}}>
       <CssBaseline />
       <Box
         sx={{
@@ -61,32 +83,32 @@ export default function Userprofile() {
                 label="Username"
                 name="username"
                 autoComplete="username"
-                value={"User A"}
+                defaultValue={username}
+                onChange={usernameChangeHandler}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                required
+                inputProps={{ readOnly: true }}
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
-                value={"test@email.com"}
-                autoComplete="email"
+                defaultValue={user.email}
               />
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
-                required
+                inputProps={{ readOnly: true }}
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                value={"sdfsdfsd"}
+                value={user.password}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
           <Button
             type="submit"

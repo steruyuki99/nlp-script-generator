@@ -39,7 +39,7 @@ export default function Result() {
   }, []);
 
   return (
-    <Container>
+    <Container  sx={{marginTop: "10vh"}}>
       <Box
         sx={{
           marginBottom: 4,

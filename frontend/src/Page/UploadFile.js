@@ -31,25 +31,9 @@ const UploadFile = () => {
     setFileName(e.target.files[0].name);
   };
 
-  // const uploadFile = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData();
-  //   formData.append("file", file);
-  //   formData.append("fileName", fileName);
-  //   try {
-  //     const res = await axios.post("http://localhost:8000/upload", formData);
-  //     console.log(res);
-  //     console.log(res.data.results);
-  //     setGeneratedText(res.data.results);
-  //   } catch (ex) {
-  //     console.log(ex);
-  //   }
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Submit button");
-
     function GenerateText() {
       return new Promise((resolve) => {
         const formData = new FormData();
@@ -58,9 +42,10 @@ const UploadFile = () => {
         axios
           .post("http://localhost:8000/upload", formData)
           .then((res) => {
+            const minutesText = res.data.results;
             setGeneratedText(res.data.results);
             console.log(res.data.resolve)
-            resolve(res.data.resolve);
+            resolve(minutesText);
           })
           .catch((err) => {
             console.log("error on upload file: ", err);
@@ -83,7 +68,7 @@ const UploadFile = () => {
         addDoc(collection(db, "minutes"), {
           date: time,
           description: description,
-          minutesText: generatedText,
+          minutesText: gText,
           title: title,
         })
           .then((response) => {
@@ -164,9 +149,6 @@ const UploadFile = () => {
           Upload FIle
         </Button>
       </Box>
-      <Typography variant="" component="h2" sx={{ m: 3 }}>
-        {generatedText}
-      </Typography>
     </Container>
   );
 };

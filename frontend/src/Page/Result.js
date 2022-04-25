@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,6 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useParams } from "react-router-dom";
+
 //firebase
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -14,26 +15,29 @@ import { db } from "../firebase";
 export default function Result() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate ] = useState(" ");
+  const [date, setDate] = useState(" ");
   const [minutesText, setMinutesText] = useState("");
 
   let { minutesID } = useParams();
   const minutesId = minutesID;
   console.log(minutesId);
 
-  React.useEffect(() => { 
+  useEffect(() => {
     const docRef = doc(db, "minutes", minutesId);
-    getDoc(docRef).then((response)=>{
-      console.log(response.data());
-      console.log(response.data().date);
-      setTitle(response.data().title);
-      setDescription(response.data().description);
-      setDate(response.data().date);
-      setMinutesText(response.data().minutesText);
-    }).catch((err) => {
-      console.log(err);
-    })
+    getDoc(docRef)
+      .then((response) => {
+        console.log(response.data());
+        console.log(response.data().date);
+        setTitle(response.data().title);
+        setDescription(response.data().description);
+        setDate(response.data().date);
+        setMinutesText(response.data().minutesText);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
   return (
     <Container>
       <Box
@@ -62,14 +66,11 @@ export default function Result() {
               </TableRow>
               <TableRow>
                 <TableCell variant="head">Description</TableCell>
-                <TableCell>
-                  {description}</TableCell>
+                <TableCell>{description}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell variant="head">Generated Text</TableCell>
-                <TableCell>
-                {minutesText}
-                 </TableCell>
+                <TableCell>{minutesText}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

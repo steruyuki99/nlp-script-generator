@@ -79,6 +79,7 @@ const UploadFile = () => {
       return new Promise((resolve) => {
         console.log(gText);
         addDoc(collection(db, "minutes"), {
+          uid: userID,
           date: time,
           description: description,
           minutesText: gText,

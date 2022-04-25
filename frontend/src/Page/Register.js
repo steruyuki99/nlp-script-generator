@@ -11,8 +11,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 //firebase
-import { auth } from "../firebase";
-import { createUserWithEmailAndPassword , updateProfile} from "firebase/auth";
+import { auth, db } from "../firebase";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -41,39 +42,78 @@ export default function Register() {
     // });
 
     function createNewUser() {
-      return new Promise((resolve) =>{
-        createUserWithEmailAndPassword(auth, email, password).then(
-          (userCredential) => {
+      return new Promise((resolve) => {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user);  
+            console.log(user);
             resolve(user);
-          }
-        ).catch((err)=>{
-          console.log("Error on create user ", err);
-        })
-      })
+          })
+          .catch((err) => {
+            console.log("Error on create user ", err);
+          });
+      });
     }
 
-    function updateDisplayname(user){
-      return new Promise((resolve) =>{
+    function updateDisplayname(user) {
+      return new Promise((resolve) => {
         updateProfile(user, {
           displayName: username,
-        }).then(()=>{
-          console.log("Updated username");
-          resolve(user);
-        }).catch((err)=>{
-          console.log(err);
         })
-      })
+          .then(() => {
+            console.log("Updated username");
+            resolve(user);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     }
 
-    createNewUser().then((user)=>{
-      return updateDisplayname(user);
-    }).then((user)=>{
-      console.log("Next navigate");
-      console.log(user);
-      navigate(`../list`);
-    })
+    function updateMinutesList(user) {
+      return new Promise((resolve) => {
+        const ref = doc(db, "minutesList", user.uid);
+        const sendTime = new Date();
+        const timed = sendTime.getHours() + ":" + sendTime.getMinutes();
+        const day =
+          sendTime.getDate() +
+          "/" +
+          (sendTime.getMonth() + 1) +
+          "/" +
+          sendTime.getFullYear();
+        const time = day + " " + timed;
+
+        setDoc(ref, {
+          minute: [
+            {
+              date: time,
+              description: "description for this project",
+              minuteID: "i0FTt70pZBvBzNB2qNh9",
+              title: "sample",
+            },
+          ],
+        })
+          .then(() => {
+            resolve(user);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    }
+
+    createNewUser()
+      .then((user) => {
+        return updateDisplayname(user);
+      })
+      .then((user) => {
+        console.log("Next navigate");
+        console.log(user);
+        return updateMinutesList(user);
+      })
+      .then((user) => {
+        navigate(`../list`);
+      });
   };
 
   return (

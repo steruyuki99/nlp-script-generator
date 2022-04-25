@@ -11,6 +11,8 @@ import axios from "axios";
 //import firebase
 import { db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+
 
 const UploadFile = () => {
   const [title, setTitle] = useState("");
@@ -18,6 +20,7 @@ const UploadFile = () => {
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
   const [generatedText, setGeneratedText] = useState("No Text Genenrated");
+  let navigate = useNavigate();
 
   const descriptionChangeHandler = (event) => {
     setDescription(event.target.value);
@@ -44,7 +47,7 @@ const UploadFile = () => {
           .then((res) => {
             const minutesText = res.data.results;
             setGeneratedText(res.data.results);
-            console.log(res.data.resolve)
+            console.log(res.data.resolve);
             resolve(minutesText);
           })
           .catch((err) => {
@@ -88,6 +91,7 @@ const UploadFile = () => {
       })
       .then((docID) => {
         console.log(docID);
+        navigate(`/list/${docID}`);
       });
   };
 

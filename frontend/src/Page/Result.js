@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState , useEffect } from "react";
 import { Container, Grid, Typography, Box } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,8 +6,34 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useParams } from "react-router-dom";
+//firebase
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export default function Result() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate ] = useState(" ");
+  const [minutesText, setMinutesText] = useState("");
+
+  let { minutesID } = useParams();
+  const minutesId = minutesID;
+  console.log(minutesId);
+
+  React.useEffect(() => { 
+    const docRef = doc(db, "minutes", minutesId);
+    getDoc(docRef).then((response)=>{
+      console.log(response.data());
+      console.log(response.data().date);
+      setTitle(response.data().title);
+      setDescription(response.data().description);
+      setDate(response.data().date);
+      setMinutesText(response.data().minutesText);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }, []);
   return (
     <Container>
       <Box
@@ -28,36 +54,22 @@ export default function Result() {
                 <TableCell variant="head" style={{ width: 130 }}>
                   Title
                 </TableCell>
-                <TableCell>Sample 1</TableCell>
+                <TableCell>{title}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell variant="head">Date</TableCell>
-                <TableCell>24/4/2022</TableCell>
+                <TableCell>{date}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell variant="head">Description</TableCell>
                 <TableCell>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent placerat mattis tortor, eu condimentum dolor
-                  fringilla non. Sed vitae neque erat. Donec purus lectus,
-                  maximus vel rhoncus sit amet, rutrum eu ligula.{" "}
-                </TableCell>
-              </TableRow>{" "}
+                  {description}</TableCell>
+              </TableRow>
               <TableRow>
                 <TableCell variant="head">Generated Text</TableCell>
                 <TableCell>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Praesent placerat mattis tortor, eu condimentum dolor
-                  fringilla non. Sed vitae neque erat. Donec purus lectus,
-                  maximus vel rhoncus sit amet, rutrum eu ligula. Lorem ipsum
-                  dolor sit amet, consectetur adipiscing elit. Praesent placerat
-                  mattis tortor, eu condimentum dolor fringilla non. Sed vitae
-                  neque erat. Donec purus lectus, maximus vel rhoncus sit amet,
-                  rutrum eu ligula. Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit. Praesent placerat mattis tortor, eu
-                  condimentum dolor fringilla non. Sed vitae neque erat. Donec
-                  purus lectus, maximus vel rhoncus sit amet, rutrum eu ligula.{" "}
-                </TableCell>
+                {minutesText}
+                 </TableCell>
               </TableRow>
             </TableBody>
           </Table>

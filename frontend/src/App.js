@@ -17,11 +17,11 @@ function App() {
       <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage/>} />
+            <Route path="list/:minutesID" element={<Result />} />
             <Route path="list" element={<ListMeeting />} />
             <Route path="register" element={<Register />} />
             <Route path="upload" element={<UploadFile />} />
             <Route path="userprofile" element={<Userprofile />} />
-            <Route path="result" element={<Result />} />
           </Routes>
       </BrowserRouter>
     </div>

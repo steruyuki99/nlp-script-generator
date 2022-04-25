@@ -7,7 +7,7 @@ import ListMeeting from "./Page/ListMeeting";
 import Register from "./Page/Register";
 import UploadFile from "./Page/UploadFile";
 import Userprofile from "./Page/UserProfile";
-import LandingPage from "./Page/LandingPage";
+import SignIn from "./Page/SignIn";
 import Result from "./Page/Result";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
       <Header />
       <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LandingPage/>} />
+            <Route path="/" element={<SignIn />} />
             <Route path="list/:minutesID" element={<Result />} />
             <Route path="list" element={<ListMeeting />} />
             <Route path="register" element={<Register />} />

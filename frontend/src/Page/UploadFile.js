@@ -150,7 +150,7 @@ const UploadFile = () => {
         </label>
         <br />
         <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Upload FIle
+          Upload File
         </Button>
       </Box>
     </Container>

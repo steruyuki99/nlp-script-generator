@@ -42,6 +42,11 @@ const ListMeeting = () => {
     })
   }, []);
 
+  const routeChange = () =>{
+    let path = `/upload`;
+    navigate(path);
+  }
+
   return (
     <Container component="section" maxWidth="lg">
       <Grid container>
@@ -55,7 +60,7 @@ const ListMeeting = () => {
           </Typography>
         </Grid>
         <Grid item>
-          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }} onClick={routeChange}>
             Create New Minutes
           </Button>
         </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import {
   Container,
   Typography,
@@ -9,12 +9,13 @@ import {
 } from "@mui/material";
 import axios from "axios";
 //import firebase
-import { db } from "../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { db , auth} from "../firebase";
+import { addDoc, collection, doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 
 const UploadFile = () => {
+  const [userID, setUserID] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState();
@@ -22,6 +23,15 @@ const UploadFile = () => {
   const [generatedText, setGeneratedText] = useState("No Text Genenrated");
   let navigate = useNavigate();
 
+  useEffect(() =>{
+    const user = auth.currentUser;
+    if (user) {
+      setUserID(user.uid);
+    } else {
+      navigate("../");
+    }
+  }, []);
+  
   const descriptionChangeHandler = (event) => {
     setDescription(event.target.value);
   };
@@ -37,6 +47,15 @@ const UploadFile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Submit button");
+    const sendTime = new Date();
+    const timed = sendTime.getHours() + ":" + sendTime.getMinutes();
+    const day =
+      sendTime.getDate() +
+      "/" +
+      (sendTime.getMonth() + 1) +
+      "/" +
+      sendTime.getFullYear();
+    const time = day + " " + timed;
     function GenerateText() {
       return new Promise((resolve) => {
         const formData = new FormData();
@@ -58,15 +77,6 @@ const UploadFile = () => {
 
     function UploadText(gText) {
       return new Promise((resolve) => {
-        const sendTime = new Date();
-        const timed = sendTime.getHours() + ":" + sendTime.getMinutes();
-        const day =
-          sendTime.getDate() +
-          "/" +
-          (sendTime.getMonth() + 1) +
-          "/" +
-          sendTime.getFullYear();
-        const time = day + " " + timed;
         console.log(gText);
         addDoc(collection(db, "minutes"), {
           date: time,
@@ -84,6 +94,24 @@ const UploadFile = () => {
       });
     }
 
+    function updateUserList(docID) {
+      return new Promise((resolve) => {
+        const docRef = doc(db, "minutesList" , userID);
+        updateDoc(docRef, {
+          minute: arrayUnion({
+            date: time,
+            description: description,
+            title: title,
+            minuteID: docID
+          })
+        }).then(() =>{
+          resolve(docID);
+        }).catch((err) => {
+          console.log(err);
+        })
+      })
+    }
+
     GenerateText()
       .then((gText) => {
         console.log(gText);
@@ -91,8 +119,11 @@ const UploadFile = () => {
       })
       .then((docID) => {
         console.log(docID);
+        return updateUserList(docID);
+      }).then((docID)=>{
+        console.log(docID);
         navigate(`/list/${docID}`);
-      });
+      })
   };
 
   return (

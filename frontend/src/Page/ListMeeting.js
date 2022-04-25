@@ -3,8 +3,9 @@ import { Grid, Typography, Container, Button } from "@mui/material";
 import MeetingCard from "../Components/MeetingCard/MeetingCard";
 //firebase
 import { db, auth } from "../firebase";
-import { collection, getDoc, doc, addDoc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+
 const ListMeeting = () => {
   const [list, setList] = useState([]);
   let navigate = useNavigate();
@@ -70,6 +71,7 @@ const ListMeeting = () => {
           return(
             <Grid item xs={12} md={4}>
               <MeetingCard
+                key={idx}
                 date={d.date}
                 title={d.title}
                 description={d.description}

@@ -8,6 +8,7 @@ const MeetingCard = (props) => {
     let path = `/list/${props.minuteId}`;
     navigate(path);
   }
+  
   return (
     <Card sx={{ minWidth: 275, m: 1 }}>
       <CardContent>

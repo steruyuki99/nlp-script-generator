@@ -128,7 +128,7 @@ const UploadFile = () => {
   };
 
   return (
-    <Container component="section" maxWidth="md"  sx={{marginTop: "10vh"}}>
+    <Container component="section" maxWidth="md"  sx={{marginTop: "12vh"}}>
       <Typography variant="h3" component="h2" sx={{ m: 3 }}>
         Upload File
       </Typography>{" "}

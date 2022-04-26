@@ -21,6 +21,7 @@ const theme = createTheme();
 export default function Userprofile() {
   const [user, setUser] = useState("");
   let navigate = useNavigate();
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
 
   useEffect(() => {
@@ -83,7 +84,8 @@ export default function Userprofile() {
                 label="Username"
                 name="username"
                 autoComplete="username"
-                defaultValue={username}
+                defaultValue={user.displayName}
+                value={username}
                 onChange={usernameChangeHandler}
               />
             </Grid>
@@ -95,6 +97,7 @@ export default function Userprofile() {
                 label="Email Address"
                 name="email"
                 defaultValue={user.email}
+                value={email}
               />
             </Grid>
             {/* <Grid item xs={12}>

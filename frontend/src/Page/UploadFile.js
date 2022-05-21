@@ -1,29 +1,33 @@
-import React, { useState , useEffect } from "react";
-import {
-  Container,
-  Typography,
-  Box,
-  TextField,
-  Button,
-  Grid,
-} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Typography, Box, TextField, Button } from "@mui/material";
 import axios from "axios";
 //import firebase
-import { db , auth} from "../firebase";
-import { addDoc, collection, doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db, auth } from "../firebase";
+import {
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
 
 const UploadFile = () => {
   const [userID, setUserID] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [participants, setParticipants] = useState("");
+  const [unableAttend, setUnableAttend] = useState(" ");
+  const [finalWord, setFinalWord] = useState(false);
+  const [crrSpeaker, setCrrSpeaker] = useState("");
+  const [numLengthTimestamp, setLengthTimestamp] = useState("");
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
   const [generatedText, setGeneratedText] = useState("No Text Genenrated");
   let navigate = useNavigate();
 
-  useEffect(() =>{
+  useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       setUserID(user.uid);
@@ -31,7 +35,7 @@ const UploadFile = () => {
       navigate("../");
     }
   }, []);
-  
+
   const descriptionChangeHandler = (event) => {
     setDescription(event.target.value);
   };
@@ -39,6 +43,15 @@ const UploadFile = () => {
     setTitle(event.target.value);
   };
 
+  const locationChangeHandler = (event) => {
+    setLocation(event.target.value);
+  };
+  const participantsChangeHandler = (event) => {
+    setParticipants(event.target.value);
+  };
+  const unableAttendChangeHandler = (event) => {
+    setUnableAttend(event.target.value);
+  };
   const saveFile = (e) => {
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
@@ -64,9 +77,15 @@ const UploadFile = () => {
         axios
           .post("http://localhost:8000/upload", formData)
           .then((res) => {
-            const minutesText = res.data.results;
-            setGeneratedText(res.data.results);
-            console.log(res.data.resolve);
+            console.log(res.data.results);
+            const minutesText =
+              res.data.results.result.results[0].alternatives[0].transcript;
+            setGeneratedText(
+              res.data.results.result.results[0].alternatives[0].transcript
+            );
+            console.log(res.data.result);
+            const dialog = generateDialog(res.data.results);
+            console.log(dialog);
             resolve(minutesText);
           })
           .catch((err) => {
@@ -97,22 +116,78 @@ const UploadFile = () => {
 
     function updateUserList(docID) {
       return new Promise((resolve) => {
-        const docRef = doc(db, "minutesList" , userID);
+        const docRef = doc(db, "minutesList", userID);
         updateDoc(docRef, {
           minute: arrayUnion({
             date: time,
             description: description,
             title: title,
-            minuteID: docID
-          })
-        }).then(() =>{
-          resolve(docID);
-        }).catch((err) => {
-          console.log(err);
+            minuteID: docID,
+          }),
         })
-      })
+          .then(() => {
+            resolve(docID);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     }
 
+    function generateDialog(result) {
+      var i = 0; //for speaker_labels array
+      var j = 0; //for results
+      var k = 0; //for results coounting
+      var fullDialog = [];
+      var str = "";
+      var final = false;
+      var crrSp = result.result.speaker_labels[i].speaker;
+      var fulltext = result.result.results[j].alternatives[0].transcript;
+      console.log(result);
+      const lengthAlternative = result.result.results.length;
+      // const lengthTimetamps = result.result.results[0].alternatives[0].timestamps.length;
+      setLengthTimestamp(
+        result.result.results[0].alternatives[0].timestamps.length
+      );
+      setCrrSpeaker(result.result.speaker_labels[i].speaker);
+      while (!final) {
+        setFinalWord(result.result.speaker_labels[i].final);
+        final = result.result.speaker_labels[i].final;
+        if (k >= result.result.results[j].alternatives[0].timestamps.length) {
+          console.log("K: " + k + " j: " + j);
+          k = 0;
+          j++;
+          fulltext += result.result.results[j].alternatives[0].transcript;
+          setLengthTimestamp(
+            result.result.results[j].alternatives[0].timestamps.length
+          );
+        }
+        // setCrrSpeaker(result.result.speaker_labels[i].speaker);
+        console.log(crrSp);
+        console.log(result.result.speaker_labels[i].speaker);
+        if (crrSp != result.result.speaker_labels[i].speaker) {
+          const dialog = { speaker: result.result.speaker_labels[i].speaker, text: str };
+          fullDialog.push(dialog);
+          console.log(fullDialog);
+          console.log(fulltext);
+          str="";
+          var crrSp = result.result.speaker_labels[i].speaker;
+          setCrrSpeaker(result.result.speaker_labels[i].speaker);
+        }
+        if (
+          result.result.results[j].alternatives[0].timestamps[k][1] ==
+          result.result.speaker_labels[i].from
+        ) {
+          //to add data in to the specific array
+          str +=
+            result.result.results[j].alternatives[0].timestamps[k][0] + " ";
+        }
+        k++;
+        i++;
+      }
+      const res = { dialog: fullDialog, text: fulltext };
+      return res;
+    }
     GenerateText()
       .then((gText) => {
         console.log(gText);
@@ -121,14 +196,15 @@ const UploadFile = () => {
       .then((docID) => {
         console.log(docID);
         return updateUserList(docID);
-      }).then((docID)=>{
+      })
+      .then((docID) => {
         console.log(docID);
         navigate(`/list/${docID}`);
-      })
+      });
   };
 
   return (
-    <Container component="section" maxWidth="md"  sx={{marginTop: "12vh"}}>
+    <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
       <Typography variant="h3" component="h2" sx={{ m: 3 }}>
         Upload File
       </Typography>{" "}
@@ -152,7 +228,37 @@ const UploadFile = () => {
           name="Description"
           autoFocus
           onChange={descriptionChangeHandler}
+        />{" "}
+        <TextField
+          margin="normal"
+          required
+          sx={{ width: "80%" }}
+          id="Location"
+          label="Location"
+          name="Location"
+          autoFocus
+          onChange={locationChangeHandler}
         />
+        <TextField
+          margin="normal"
+          required
+          sx={{ width: "80%" }}
+          id="Participants"
+          label="Participants"
+          name="Participants"
+          autoFocus
+          onChange={participantsChangeHandler}
+        />{" "}
+        <TextField
+          margin="normal"
+          required
+          sx={{ width: "80%" }}
+          id="UnableAttend"
+          label="Unable Attendant Participants"
+          name="UnableAttend"
+          autoFocus
+          onChange={unableAttendChangeHandler}
+        />{" "}
         {/* <Box fullwidth sx={{  justifyContent: 'center'}}>
         <FileUploader
           handleChange={handleChange}

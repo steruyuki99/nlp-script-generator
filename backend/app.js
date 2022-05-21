@@ -44,6 +44,8 @@ app.post("/upload", (req, res) => {
         audio: fs.createReadStream(`files/${filename}`),
         contentType: "audio/mp3",
         wordAlternativesThreshold: 0.9,
+        speakerLabels: true,
+        timestamps: true,
       };
 
       speechToText
@@ -51,7 +53,8 @@ app.post("/upload", (req, res) => {
         .then((speechRecognitionResults) => {
           console.log(JSON.stringify(speechRecognitionResults, null, 2))
           console.log(speechRecognitionResults.result.results[0].alternatives[0].transcript);
-          resolve(speechRecognitionResults.result.results[0].alternatives[0].transcript);
+          resolve(speechRecognitionResults);
+          // resolve(speechRecognitionResults.result.results[0].alternatives[0].transcript);
         })
         .catch((err) => {
           console.log("error:", err);

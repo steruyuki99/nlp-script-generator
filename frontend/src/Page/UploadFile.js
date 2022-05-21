@@ -19,12 +19,8 @@ const UploadFile = () => {
   const [location, setLocation] = useState("");
   const [participants, setParticipants] = useState("");
   const [unableAttend, setUnableAttend] = useState(" ");
-  const [finalWord, setFinalWord] = useState(false);
-  const [crrSpeaker, setCrrSpeaker] = useState("");
-  const [numLengthTimestamp, setLengthTimestamp] = useState("");
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
-  const [generatedText, setGeneratedText] = useState("No Text Genenrated");
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -80,13 +76,10 @@ const UploadFile = () => {
             console.log(res.data.results);
             const minutesText =
               res.data.results.result.results[0].alternatives[0].transcript;
-            setGeneratedText(
-              res.data.results.result.results[0].alternatives[0].transcript
-            );
             console.log(res.data.result);
             const dialog = generateDialog(res.data.results);
             console.log(dialog);
-            resolve(minutesText);
+            resolve(dialog);
           })
           .catch((err) => {
             console.log("error on upload file: ", err);
@@ -94,14 +87,18 @@ const UploadFile = () => {
       });
     }
 
-    function UploadText(gText) {
+    function UploadText(dialog) {
       return new Promise((resolve) => {
-        console.log(gText);
+        console.log(dialog);
         addDoc(collection(db, "minutes"), {
           uid: userID,
           date: time,
           description: description,
-          minutesText: gText,
+          minutesText: dialog.text,
+          dialog: dialog.dialog,
+          location: location,
+          participants: participants,
+          unableAttend: unableAttend,
           title: title,
         })
           .then((response) => {
@@ -144,23 +141,13 @@ const UploadFile = () => {
       var crrSp = result.result.speaker_labels[i].speaker;
       var fulltext = result.result.results[j].alternatives[0].transcript;
       console.log(result);
-      const lengthAlternative = result.result.results.length;
-      // const lengthTimetamps = result.result.results[0].alternatives[0].timestamps.length;
-      setLengthTimestamp(
-        result.result.results[0].alternatives[0].timestamps.length
-      );
-      setCrrSpeaker(result.result.speaker_labels[i].speaker);
       while (!final) {
-        setFinalWord(result.result.speaker_labels[i].final);
         final = result.result.speaker_labels[i].final;
         if (k >= result.result.results[j].alternatives[0].timestamps.length) {
           console.log("K: " + k + " j: " + j);
           k = 0;
           j++;
           fulltext += result.result.results[j].alternatives[0].transcript;
-          setLengthTimestamp(
-            result.result.results[j].alternatives[0].timestamps.length
-          );
         }
         // setCrrSpeaker(result.result.speaker_labels[i].speaker);
         console.log(crrSp);
@@ -172,7 +159,6 @@ const UploadFile = () => {
           console.log(fulltext);
           str="";
           var crrSp = result.result.speaker_labels[i].speaker;
-          setCrrSpeaker(result.result.speaker_labels[i].speaker);
         }
         if (
           result.result.results[j].alternatives[0].timestamps[k][1] ==
@@ -181,6 +167,8 @@ const UploadFile = () => {
           //to add data in to the specific array
           str +=
             result.result.results[j].alternatives[0].timestamps[k][0] + " ";
+        } else {
+          console.log("A message will not shown " + result.result.results[j].alternatives[0].timestamps[k][0]);
         }
         k++;
         i++;
@@ -189,9 +177,9 @@ const UploadFile = () => {
       return res;
     }
     GenerateText()
-      .then((gText) => {
-        console.log(gText);
-        return UploadText(gText);
+      .then((dialog) => {
+        console.log(dialog);
+        return UploadText(dialog);
       })
       .then((docID) => {
         console.log(docID);

@@ -17,7 +17,10 @@ export default function Result() {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(" ");
   const [minutesText, setMinutesText] = useState("");
-
+  const [location, setLocation] = useState("");
+  const [participants, setParticipants] = useState("");
+  const [unableAttend, setUnableAttend] = useState("");
+  const [dialog, setDialog] = useState([]);
   let { minutesID } = useParams();
   const minutesId = minutesID;
   console.log(minutesId);
@@ -32,6 +35,10 @@ export default function Result() {
         setDescription(response.data().description);
         setDate(response.data().date);
         setMinutesText(response.data().minutesText);
+        setLocation(response.data().location);
+        setParticipants(response.data().participants);
+        setUnableAttend(response.data().unableAttend);
+        setDialog(response.data().dialog);
       })
       .catch((err) => {
         console.log(err);
@@ -69,8 +76,32 @@ export default function Result() {
                 <TableCell>{description}</TableCell>
               </TableRow>
               <TableRow>
+                <TableCell variant="head">Location</TableCell>
+                <TableCell>{location}</TableCell>
+              </TableRow>              <TableRow>
+                <TableCell variant="head">Participants</TableCell>
+                <TableCell>{participants}</TableCell>
+              </TableRow>              <TableRow>
+                <TableCell variant="head">Participants that unable to attend</TableCell>
+                <TableCell>{unableAttend}</TableCell>
+              </TableRow>
+              <TableRow>
                 <TableCell variant="head">Generated Text</TableCell>
                 <TableCell>{minutesText}</TableCell>
+              </TableRow>
+              <TableRow>
+              <TableCell variant="head">Dialog</TableCell>
+              <TableCell>
+                {
+                  dialog.map((d, idx) =>{
+                    return(
+                      <TableRow>
+                        <TableCell variant="head" width={"20%"}>Speaker {d.speaker}</TableCell>
+                        <TableCell>{d.text}</TableCell>
+                      </TableRow>
+                    )
+                  })
+                }</TableCell>
               </TableRow>
             </TableBody>
           </Table>

@@ -5,6 +5,7 @@ const fs = require("fs");
 const SpeechToTextV1 = require("ibm-watson/speech-to-text/v1");
 const { IamAuthenticator } = require("ibm-watson/auth");
 const { getEnabledCategories } = require("trace_events");
+const { resolve } = require("path");
 require("dotenv").config();
 const app = express();
 
@@ -48,12 +49,17 @@ app.post("/upload", (req, res) => {
         timestamps: true,
       };
 
+      console.log(recognizeParams.audio);
       speechToText
         .recognize(recognizeParams)
         .then((speechRecognitionResults) => {
           console.log(JSON.stringify(speechRecognitionResults, null, 2))
           console.log(speechRecognitionResults.result.results[0].alternatives[0].transcript);
-          resolve(speechRecognitionResults);
+          console.log(recognizeParams.audio);
+          const filepath = newpath + filename;
+          console.log(filepath);
+          const resObj = {result: speechRecognitionResults, path: filepath};
+          resolve(resObj);
           // resolve(speechRecognitionResults.result.results[0].alternatives[0].transcript);
         })
         .catch((err) => {
@@ -67,12 +73,13 @@ app.post("/upload", (req, res) => {
       console.log(fpath);
       return SText();
     })
-    .then((text) => {
-      console.log(text)
+    .then((resObj) => {
+      console.log(resObj)
       res.status(200).send({
         message: "File Uploaded",
         code: 200,
-        results: text,
+        results: resObj.result,
+        path: resObj
       });
     });
 });

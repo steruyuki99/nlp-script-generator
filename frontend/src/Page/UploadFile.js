@@ -74,12 +74,17 @@ const UploadFile = () => {
           .post("http://localhost:8000/upload", formData)
           .then((res) => {
             console.log(res.data.results);
+            console.log(res.data.path);
+            console.log(res.data.path.path);
+            const filepath = res.data.path.path;
             const minutesText =
               res.data.results.result.results[0].alternatives[0].transcript;
             console.log(res.data.result);
             const dialog = generateDialog(res.data.results);
+            const  resObj = {dialog: dialog, filepath: filepath};
             console.log(dialog);
-            resolve(dialog);
+            console.log(formData);
+            resolve(resObj);
           })
           .catch((err) => {
             console.log("error on upload file: ", err);
@@ -87,19 +92,20 @@ const UploadFile = () => {
       });
     }
 
-    function UploadText(dialog) {
+    function UploadText(resObj) {
       return new Promise((resolve) => {
-        console.log(dialog);
+        console.log(resObj);
         addDoc(collection(db, "minutes"), {
           uid: userID,
           date: time,
           description: description,
-          minutesText: dialog.text,
-          dialog: dialog.dialog,
+          minutesText: resObj.dialog.text,
+          dialog: resObj.dialog.dialog,
           location: location,
           participants: participants,
           unableAttend: unableAttend,
           title: title,
+          filepath: resObj.filepath
         })
           .then((response) => {
             console.log("Document ID", response.id);
@@ -177,9 +183,9 @@ const UploadFile = () => {
       return res;
     }
     GenerateText()
-      .then((dialog) => {
-        console.log(dialog);
-        return UploadText(dialog);
+      .then((resObj) => {
+        console.log(resObj);
+        return UploadText(resObj);
       })
       .then((docID) => {
         console.log(docID);

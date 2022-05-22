@@ -18,8 +18,12 @@ import { useNavigate } from "react-router-dom";
 
 const ListMeeting = () => {
   const [list, setList] = useState([]);
+  const [search, setSearch] = useState("");
   let navigate = useNavigate();
 
+  const searchChangeHandler = (event) =>{
+    setSearch(event.target.value);
+  }
   useEffect(() => {
     function getUID() {
       return new Promise((resolve) => {
@@ -93,7 +97,7 @@ const ListMeeting = () => {
           justifyContent="center"
         >
             <TextField
-            
+             onChange={searchChangeHandler}
               InputProps={{
                 startAdornment: (
                   <InputAdornment>
@@ -107,7 +111,16 @@ const ListMeeting = () => {
             />
         </Grid>
         <Grid container alignItems="stretch">
-          {list.map((d, idx) => {
+          {list.filter(
+            d=>{
+              if(search === ""){
+                return d;
+              } else if(d.title.toLowerCase().includes(search.toLocaleLowerCase())){
+                console.log(d);
+                return d;
+              }
+            }
+          ).map((d, idx) => {
             return (
               <Grid item xs={12} md={4}>
                 <MeetingCard

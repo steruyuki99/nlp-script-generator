@@ -81,7 +81,7 @@ const UploadFile = () => {
               res.data.results.result.results[0].alternatives[0].transcript;
             console.log(res.data.result);
             const dialog = generateDialog(res.data.results);
-            const  resObj = {dialog: dialog, filepath: filepath};
+            const resObj = { dialog: dialog, filepath: filepath };
             console.log(dialog);
             console.log(formData);
             resolve(resObj);
@@ -105,7 +105,7 @@ const UploadFile = () => {
           participants: participants,
           unableAttend: unableAttend,
           title: title,
-          filepath: resObj.filepath
+          filepath: resObj.filepath,
         })
           .then((response) => {
             console.log("Document ID", response.id);
@@ -159,11 +159,14 @@ const UploadFile = () => {
         console.log(crrSp);
         console.log(result.result.speaker_labels[i].speaker);
         if (crrSp != result.result.speaker_labels[i].speaker) {
-          const dialog = { speaker: result.result.speaker_labels[i].speaker, text: str };
+          const dialog = {
+            speaker: result.result.speaker_labels[i].speaker,
+            text: str,
+          };
           fullDialog.push(dialog);
           console.log(fullDialog);
           console.log(fulltext);
-          str="";
+          str = "";
           var crrSp = result.result.speaker_labels[i].speaker;
         }
         if (
@@ -174,7 +177,21 @@ const UploadFile = () => {
           str +=
             result.result.results[j].alternatives[0].timestamps[k][0] + " ";
         } else {
-          console.log("A message will not shown " + result.result.results[j].alternatives[0].timestamps[k][0]);
+          console.log(
+            "A message will not shown " +
+              result.result.results[j].alternatives[0].timestamps[k][0]
+          );
+        }
+        if (final) {
+          const dialog = {
+            speaker: result.result.speaker_labels[i].speaker,
+            text: str,
+          };
+          fullDialog.push(dialog);
+          console.log(fullDialog);
+          console.log(fulltext);
+          str = "";
+          var crrSp = result.result.speaker_labels[i].speaker;
         }
         k++;
         i++;

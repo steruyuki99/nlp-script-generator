@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Typography, Box } from "@mui/material";
+import { Container, Typography, Box } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import ReactAudioPlayer from "react-audio-player";
 import { useParams } from "react-router-dom";
 
 //firebase
@@ -20,6 +21,7 @@ export default function Result() {
   const [location, setLocation] = useState("");
   const [participants, setParticipants] = useState("");
   const [unableAttend, setUnableAttend] = useState("");
+  const [filepath, setFilePath] = useState("");
   const [dialog, setDialog] = useState([]);
   let { minutesID } = useParams();
   const minutesId = minutesID;
@@ -39,14 +41,21 @@ export default function Result() {
         setParticipants(response.data().participants);
         setUnableAttend(response.data().unableAttend);
         setDialog(response.data().dialog);
+        //below coding is for local deployment code. Should change the path to the your development environment respectively
+        const filename = response.data().filepath.slice(74);
+        const fpath = "http://127.0.0.1:8887" + filename;
+        setFilePath(fpath);
+        //setFilePath(response.data().filepath);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  console.log(filepath);
+
   return (
-    <Container  sx={{marginTop: "10vh"}}>
+    <Container sx={{ marginTop: "10vh" }}>
       <Box
         sx={{
           marginBottom: 4,
@@ -65,7 +74,13 @@ export default function Result() {
                 <TableCell variant="head" style={{ width: 130 }}>
                   Title
                 </TableCell>
-                <TableCell>{title}</TableCell>
+                <TableCell> {title}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell variant="head">Audio File </TableCell>
+                <TableCell>
+                  <ReactAudioPlayer src={filepath} controls />
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell variant="head">Date</TableCell>
@@ -78,11 +93,15 @@ export default function Result() {
               <TableRow>
                 <TableCell variant="head">Location</TableCell>
                 <TableCell>{location}</TableCell>
-              </TableRow>              <TableRow>
+              </TableRow>{" "}
+              <TableRow>
                 <TableCell variant="head">Participants</TableCell>
                 <TableCell>{participants}</TableCell>
-              </TableRow>              <TableRow>
-                <TableCell variant="head">Participants that unable to attend</TableCell>
+              </TableRow>{" "}
+              <TableRow>
+                <TableCell variant="head">
+                  Participants that unable to attend
+                </TableCell>
                 <TableCell>{unableAttend}</TableCell>
               </TableRow>
               <TableRow>
@@ -90,18 +109,19 @@ export default function Result() {
                 <TableCell>{minutesText}</TableCell>
               </TableRow>
               <TableRow>
-              <TableCell variant="head">Dialog</TableCell>
-              <TableCell>
-                {
-                  dialog.map((d, idx) =>{
-                    return(
+                <TableCell variant="head">Dialog</TableCell>
+                <TableCell>
+                  {dialog.map((d, idx) => {
+                    return (
                       <TableRow>
-                        <TableCell variant="head" width={"20%"}>Speaker {d.speaker}</TableCell>
+                        <TableCell variant="head" width={"20%"}>
+                          Speaker {d.speaker}
+                        </TableCell>
                         <TableCell>{d.text}</TableCell>
                       </TableRow>
-                    )
-                  })
-                }</TableCell>
+                    );
+                  })}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

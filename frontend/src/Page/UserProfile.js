@@ -31,7 +31,8 @@ export default function Userprofile() {
       console.log(userDetailed);
       console.log(userDetailed.displayName);
       setUser(userDetailed);
-      setUsername(user.displayName);
+      setEmail(userDetailed.email);
+      setUsername(userDetailed.displayName);
     } else{
       navigate("../");
     }
@@ -45,6 +46,7 @@ export default function Userprofile() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    alert("Your profile was updated!");
     updateProfile(user,{
       displayName: username,
     }).then(()=>{

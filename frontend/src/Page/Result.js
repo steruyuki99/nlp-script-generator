@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Box } from "@mui/material";
+import { Container, Typography, Box} from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -55,9 +55,14 @@ export default function Result() {
   console.log(filepath);
 
   return (
-    <Container sx={{ marginTop: "10vh" }}>
-      <Box
+    <Container sx={{ marginTop: "10vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center", }}>
+      <Paper
         sx={{
+          p: 2,
+          width: "75%",
           marginBottom: 4,
           display: "flex",
           flexDirection: "column",
@@ -67,7 +72,7 @@ export default function Result() {
         <Typography variant="h4" component="h5" sx={{ m: 3 }}>
           Minutes
         </Typography>
-        <TableContainer component={Paper} sx={{ maxWidth: 800 }}>
+        <TableContainer component={Paper} sx={{ maxWidth: 800 }} elevation={2}>
           <Table aria-label="simple table">
             <TableBody>
               <TableRow>
@@ -126,7 +131,7 @@ export default function Result() {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
+      </Paper>
     </Container>
   );
 }

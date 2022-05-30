@@ -96,6 +96,9 @@ const ListMeeting = () => {
           direction="column"
           alignItems="center"
           justifyContent="center"
+          sx={{
+            mb:2,
+          }}
         >
             <TextField
              onChange={searchChangeHandler}
@@ -109,6 +112,9 @@ const ListMeeting = () => {
                 ),
               }}
               variant="standard"
+              sx={{
+                width: "50%"
+              }}
             />
         </Grid>
         <Grid container alignItems="stretch">
@@ -123,7 +129,7 @@ const ListMeeting = () => {
             }
           ).map((d, idx) => {
             return (
-              <Grid item xs={12} md={4} elevation={12}>
+              <Grid item xs={12} md={4} >
                 <MeetingCard
                   key={idx}
                   date={d.date}

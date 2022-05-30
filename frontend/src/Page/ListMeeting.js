@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   Grid,
-  Card,
+  // Card,
+  Paper,
   Typography,
   Container,
   Button,
@@ -68,7 +69,7 @@ const ListMeeting = () => {
 
   return (
     <Container component="section" maxWidth="lg" sx={{ marginTop: "10vh", p: 1 }}>
-      <Card sx={{ minWidth: 275, p: 2, m: 1 }}>
+      <Paper sx={{ minWidth: 275, p: 2, m: 1 }}>
         <Grid container>
           <Grid item xs>
             <Typography
@@ -122,7 +123,7 @@ const ListMeeting = () => {
             }
           ).map((d, idx) => {
             return (
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={4} elevation={12}>
                 <MeetingCard
                   key={idx}
                   date={d.date}
@@ -146,7 +147,7 @@ const ListMeeting = () => {
           <MeetingCard />
         </Grid> */}
         </Grid>
-      </Card>
+      </Paper>
     </Container>
   );
 };

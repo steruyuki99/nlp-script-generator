@@ -8,6 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import Card from '@mui/material/Card';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -60,7 +61,9 @@ export default function Userprofile() {
   };
 
   return (
-    <Container component="main" maxWidth="sm" sx={{marginTop: "13vh"}}>
+    <Container component="main" maxWidth="sm" sx={{marginTop: "5vh"}}>
+      <Card sx={{ minWidth: 275, p: 1, m: 1, mt: 1 }}>
+      
       <CssBaseline />
       <Box
         sx={{
@@ -74,7 +77,7 @@ export default function Userprofile() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Userprofile
+          User Profile
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -135,6 +138,7 @@ export default function Userprofile() {
           </Button>
         </Box>
       </Box>
+      </Card>
     </Container>
   );
 }

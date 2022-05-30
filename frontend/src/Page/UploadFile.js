@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Box, TextField, Button } from "@mui/material";
+import { Container, Typography, Box, TextField, Button, Paper } from "@mui/material";
 import axios from "axios";
 //import firebase
 import { db, auth } from "../firebase";
@@ -216,6 +216,8 @@ const UploadFile = () => {
 
   return (
     <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
+      <Paper sx={{ minWidth: 275, p: 1, m: 1}}>
+      
       <Typography variant="h3" component="h2" sx={{ m: 3 }}>
         Upload File
       </Typography>{" "}
@@ -292,16 +294,17 @@ const UploadFile = () => {
             color="secondary"
             variant="contained"
             component="span"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, color: "white" }}
           >
             Choose Upload File
           </Button>
         </label>
         <br />
-        <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 1 }}>
           Upload File
         </Button>
       </Box>
+      </Paper>
     </Container>
   );
 };

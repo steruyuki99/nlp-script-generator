@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 import MenuIcon from '@mui/icons-material/Menu';
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const headersData = [
   {
@@ -58,6 +59,7 @@ const useStyles = makeStyles(() => ({
 
 export default function Header() {
   const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
+  let navigate = useNavigate();
 
   const [state, setState] = useState({
     mobileView: false,
@@ -145,7 +147,10 @@ export default function Header() {
   };
 
   const minutesLogo = (
-    <Typography variant="h6" component="h1" className={logo}>
+    <Typography variant="h6" component="h1" className={logo} onClick={
+      ()=>{
+       navigate(`/list`);
+      } }>
       Minutes Of Meeting Generator
     </Typography>
   );
@@ -170,7 +175,9 @@ export default function Header() {
 
   return (
     <header>
-      <AppBar className={header} >
+      <AppBar className={header} 
+      //  style={{ background: '#2E3B55' }} 
+       >
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
     </header>

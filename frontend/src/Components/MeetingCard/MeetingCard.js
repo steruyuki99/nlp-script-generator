@@ -10,7 +10,7 @@ const MeetingCard = (props) => {
   }
   
   return (
-    <Card sx={{ minWidth: 275, m: 1 }} key={props.key}>
+    <Card sx={{ minWidth: 275, m: 1 }} key={props.key} elevation={2}>
       <CardContent>
         <Typography variant="h5" component="div" align="left">
           {props.title}

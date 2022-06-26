@@ -21,6 +21,7 @@ const UploadFile = () => {
   const [unableAttend, setUnableAttend] = useState(" ");
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
+  const [fileIsValid, setFileValid] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +32,25 @@ const UploadFile = () => {
       navigate("../");
     }
   }, []);
+
+  const [titleTouched, setTitleTouched] = useState(false);
+  const [descriptionTouched, setDescriptionTouched] = useState(false);
+  const [locationTouched, setLocationTouched] = useState(false);
+  const [participantsTouched, setParticipantsTouched] = useState(false);
+  const [unparticipantsTouched, setUnparticipantsTouched] = useState(false);
+
+  const enteredTitleIsValid = title.trim() !== "";
+  const enteredDescriptionIsValid = description.trim !=="";
+  const enteredLocationIsValid = location.trim !== "";
+  const enteredParticipantsIsValid = participants.trim !== "";
+  const enteredUnableIsValidIsValid = unableAttend.trim !=="";
+
+  let formIsValid = false;
+
+  if(enteredTitleIsValid && enteredDescriptionIsValid && enteredLocationIsValid && enteredParticipantsIsValid && enteredUnableIsValidIsValid && fileIsValid)
+  {
+    formIsValid = true;
+  }
 
   const descriptionChangeHandler = (event) => {
     setDescription(event.target.value);
@@ -48,9 +68,28 @@ const UploadFile = () => {
   const unableAttendChangeHandler = (event) => {
     setUnableAttend(event.target.value);
   };
+
+  const isValidFileUploaded=(file)=>{
+    console.log(fileName);
+    const validExtensions = ['mp3']
+    const fileExtension = file.split('.').pop();
+    console.log(fileExtension);
+    return validExtensions.includes(fileExtension)
+  }
+
   const saveFile = (e) => {
+    if(e.target.files.length < 1){
+      return;
+    }
+
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
+
+    if(isValidFileUploaded(e.target.files[0].name)){
+      setFileValid(true);
+    } else {
+      alert("File Format is not support");
+    }
   };
 
   const handleSubmit = (event) => {
@@ -296,11 +335,11 @@ const UploadFile = () => {
             component="span"
             sx={{ mt: 3, mb: 2, color: "white" }}
           >
-            Choose Upload File
+            Choose Upload File  (Format: MP3 ONLY)
           </Button>
         </label>
         <br />
-        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 1 }}>
+        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 1 }} disabled={!formIsValid}>
           Upload File
         </Button>
       </Box>

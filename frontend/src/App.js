@@ -12,6 +12,7 @@ import Userprofile from "./Page/UserProfile";
 import SignIn from "./Page/SignIn";
 import Result from "./Page/Result";
 import Dashboard from "./Page/Dashboard";
+import ResetPassword from "./Page/ResetPassword";
 
 const theme = createTheme({
   typography: {
@@ -41,6 +42,7 @@ function App() {
             <Route path="upload" element={<UploadFile />} />
             <Route path="userprofile" element={<Userprofile />} />
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="reset" element={<ResetPassword />} />
           </Routes>
         </BrowserRouter>
       </div>

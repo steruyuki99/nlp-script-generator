@@ -18,6 +18,7 @@ import CoverImage from "../image/landingCover.jpg";
 //firebase
 import {
   browserSessionPersistence,
+  sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
 } from "firebase/auth";
@@ -100,7 +101,7 @@ export default function SignIn() {
       navigate("../list");
     });
   };
-
+  
   return (
     <Grid container component="main" sx={{ height: "90vh", marginTop: "10vh" }}>
       <CssBaseline />
@@ -189,7 +190,7 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="/reset" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>

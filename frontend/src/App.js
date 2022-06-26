@@ -19,13 +19,14 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#E85A4F',
+      main: '#305F7A',
     },
     secondary: {
       main: "#E98074",
     },
   },
 });
+
 function App() {
   return (
     <ThemeProvider theme={theme}>

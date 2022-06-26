@@ -176,7 +176,6 @@ export default function Header() {
   return (
     <header>
       <AppBar className={header} 
-      //  style={{ background: '#2E3B55' }} 
        >
         {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>

@@ -41,9 +41,27 @@ export default function Userprofile() {
     console.log(user.email);
   }, []);
 
+  
+  const [usernameTouched, setUsernameTouched] = useState(false);
+
+  const enteredNameIsValid = username.trim() !== "";
+  const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
+
+ 
+  let formIsValid = false;
+
+
   const usernameChangeHandler = (event) => {
     setUsername(event.target.value);
   };
+
+  const usernameBlurHandler = (event) => {
+    setUsernameTouched(true);
+  };
+
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,6 +69,8 @@ export default function Userprofile() {
     updateProfile(user,{
       displayName: username,
     }).then(()=>{
+      setUsername("");
+      setUsernameTouched(false);
       navigate("../userprofile");
     })
   };
@@ -92,6 +112,7 @@ export default function Userprofile() {
                 defaultValue={user.displayName}
                 value={username}
                 onChange={usernameChangeHandler}
+                onBlur={usernameBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -124,6 +145,7 @@ export default function Userprofile() {
             // maxWidth="xs"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!formIsValid}
           >
             Update
           </Button>

@@ -41,6 +41,16 @@ export default function SignIn() {
   let navigate = useNavigate();
   const classes = useStyles();
 
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const emailIsValid = email.includes("@");
+  const emailInputIsValid = !emailIsValid && emailTouched;
+
+  const passwordIsValid = password.trim() !== "";
+  const passwordInputIsValid = !passwordIsValid && passwordTouched;
+
+  let formIsValid = false;
   const emailChangeHandler = (event) => {
     setEmail(event.target.value);
   };
@@ -48,6 +58,17 @@ export default function SignIn() {
     setPassword(event.target.value);
   };
 
+  const emailBlurHandler = (event) => {
+    setEmailTouched(true);
+  };
+
+  const passwordBlurHandler = (event) => {
+    setPasswordTouched(true);
+  };
+
+  if ( emailIsValid && passwordIsValid) {
+    formIsValid = true;
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
@@ -143,6 +164,7 @@ export default function SignIn() {
                 autoComplete="email"
                 autoFocus
                 onChange={emailChangeHandler}
+                onBlur={emailBlurHandler}
               />
               <TextField
                 margin="normal"
@@ -154,12 +176,14 @@ export default function SignIn() {
                 id="password"
                 autoComplete="current-password"
                 onChange={passwordChangeHandler}
+                onBlur={passwordBlurHandler}
               />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={!formIsValid}
               >
                 Sign In
               </Button>

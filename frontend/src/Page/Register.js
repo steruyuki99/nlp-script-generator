@@ -23,10 +23,36 @@ export default function Register() {
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
 
+  const [usernameTouched, setUsernameTouched] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const enteredNameIsValid = username.trim() !== "";
+  const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
+
+  const emailIsValid = email.includes("@");
+  const emailInputIsValid = !emailIsValid && emailTouched;
+
+  const passwordIsValid = password.trim() !== "";
+  const passwordInputIsValid = !passwordIsValid && passwordTouched;
+
+  let formIsValid = false;
+
   const usernameChangeHandler = (event) => {
     setUsername(event.target.value);
   };
 
+  const usernameBlurHandler = (event) => {
+    setUsernameTouched(true);
+  };
+
+  const emailBlurHandler = (event) => {
+    setEmailTouched(true);
+  };
+
+  const passwordBlurHandler = (event) => {
+    setPasswordTouched(true);
+  };
   const emailChangeHandler = (event) => {
     setEmail(event.target.value);
   };
@@ -34,6 +60,10 @@ export default function Register() {
   const passwordChangeHandler = (event) => {
     setPassword(event.target.value);
   };
+
+  if (enteredNameIsValid && emailIsValid && passwordIsValid) {
+    formIsValid = true;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -100,6 +130,7 @@ export default function Register() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err);
           });
       });
     }
@@ -115,6 +146,12 @@ export default function Register() {
       })
       .then((user) => {
         navigate(`../list`);
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setUsernameTouched(false);
+        setEmailTouched(false);
+        setPasswordTouched(false);
       });
   };
 
@@ -146,6 +183,7 @@ export default function Register() {
                 name="username"
                 autoComplete="username"
                 onChange={usernameChangeHandler}
+                onBlur={usernameBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -157,6 +195,7 @@ export default function Register() {
                 name="email"
                 autoComplete="email"
                 onChange={emailChangeHandler}
+                onBlur={emailBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -169,6 +208,7 @@ export default function Register() {
                 id="password"
                 autoComplete="new-password"
                 onChange={passwordChangeHandler}
+                onBlur={passwordBlurHandler}
               />
             </Grid>
           </Grid>
@@ -177,16 +217,19 @@ export default function Register() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!formIsValid}
           >
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="#" variant="body2"  onClick={
-               ()=>{
-                navigate(`/`);
-               }
-              }>
+              <Link
+                href="#"
+                variant="body2"
+                onClick={() => {
+                  navigate(`/`);
+                }}
+              >
                 Already have an account? Sign in
               </Link>
             </Grid>

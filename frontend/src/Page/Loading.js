@@ -1,39 +1,33 @@
 // import { defaultListboxReducer } from "@mui/base";
 import React from "react";
-import {
-    Container,
-    Typography
-  } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import ReactLoading from "react-loading";
 
 export default function Loading() {
   return (
-    <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
-    <div
-      style={{
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 3,
-      }}
-    >
-      <ReactLoading type={"spokes"} color="#305F7A" />
-      <Typography variant="h5" component="h5">Loading....</Typography>
-    </div></Container>
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          marginTop: 3,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column"
+          }}
+        >
+          <ReactLoading type={"bars"} color="#305F7A" />
+          <Typography variant="h5" component="h5" sx={{  mt:2}}>
+            Loading...
+          </Typography>
+        </div>
+      </div>
   );
 }
-
-// const Loading = () => (
-//   <div
-//     style={{
-//       display: "flex",
-//       alignItems: "center",
-//       justifyContent: "center",
-//     }}
-//   >
-//     <ReactLoading type={"spokes"} color="#305F7A" />
-//   </div>
-// );
-
-// export default Loading;

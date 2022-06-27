@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Container, Typography, Box, TextField, Button, Paper } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Paper,
+} from "@mui/material";
 import axios from "axios";
 //import firebase
 import { db, auth } from "../firebase";
@@ -42,15 +49,21 @@ const UploadFile = () => {
   const [unparticipantsTouched, setUnparticipantsTouched] = useState(false);
 
   const enteredTitleIsValid = title.trim() !== "";
-  const enteredDescriptionIsValid = description.trim !=="";
+  const enteredDescriptionIsValid = description.trim !== "";
   const enteredLocationIsValid = location.trim !== "";
   const enteredParticipantsIsValid = participants.trim !== "";
-  const enteredUnableIsValidIsValid = unableAttend.trim !=="";
+  const enteredUnableIsValidIsValid = unableAttend.trim !== "";
 
   let formIsValid = false;
 
-  if(enteredTitleIsValid && enteredDescriptionIsValid && enteredLocationIsValid && enteredParticipantsIsValid && enteredUnableIsValidIsValid && fileIsValid)
-  {
+  if (
+    enteredTitleIsValid &&
+    enteredDescriptionIsValid &&
+    enteredLocationIsValid &&
+    enteredParticipantsIsValid &&
+    enteredUnableIsValidIsValid &&
+    fileIsValid
+  ) {
     formIsValid = true;
   }
 
@@ -71,23 +84,23 @@ const UploadFile = () => {
     setUnableAttend(event.target.value);
   };
 
-  const isValidFileUploaded=(file)=>{
+  const isValidFileUploaded = (file) => {
     console.log(fileName);
-    const validExtensions = ['mp3']
-    const fileExtension = file.split('.').pop();
+    const validExtensions = ["mp3"];
+    const fileExtension = file.split(".").pop();
     console.log(fileExtension);
-    return validExtensions.includes(fileExtension)
-  }
+    return validExtensions.includes(fileExtension);
+  };
 
   const saveFile = (e) => {
-    if(e.target.files.length < 1){
+    if (e.target.files.length < 1) {
       return;
     }
 
     setFile(e.target.files[0]);
     setFileName(e.target.files[0].name);
 
-    if(isValidFileUploaded(e.target.files[0].name)){
+    if (isValidFileUploaded(e.target.files[0].name)) {
       setFileValid(true);
     } else {
       alert("File Format is not support");
@@ -106,6 +119,8 @@ const UploadFile = () => {
       "/" +
       sendTime.getFullYear();
     const time = day + " " + timed;
+
+    setLoading(true);
     function GenerateText() {
       return new Promise((resolve) => {
         const formData = new FormData();
@@ -129,6 +144,8 @@ const UploadFile = () => {
           })
           .catch((err) => {
             console.log("error on upload file: ", err);
+            alert(err);
+            setLoading(false);
           });
       });
     }
@@ -154,6 +171,8 @@ const UploadFile = () => {
           })
           .catch((err) => {
             console.log("Firebase Error: ", err);
+            alert(err.message);
+            setLoading(false);
           });
       });
     }
@@ -174,6 +193,8 @@ const UploadFile = () => {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
+            setLoading(false);
           });
       });
     }
@@ -251,107 +272,116 @@ const UploadFile = () => {
       })
       .then((docID) => {
         console.log(docID);
+        setLoading(false);
         navigate(`/list/${docID}`);
       });
   };
 
-  if(loadingState){
-  return (
-    <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
-      <Paper sx={{ minWidth: 275, p: 1, m: 1}}>
-      
-      <Typography variant="h3" component="h2" sx={{ m: 3 }}>
-        Upload File
-      </Typography>{" "}
-      <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit}>
-        <TextField
-          margin="normal"
-          required
-          sx={{ width: "80%" }}
-          id="Title"
-          label="Title"
-          name="Title"
-          autoFocus
-          onChange={titleChangeHandler}
-        />{" "}
-        <TextField
-          margin="normal"
-          required
-          sx={{ width: "80%" }}
-          id="Description"
-          label="Description"
-          name="Description"
-          autoFocus
-          onChange={descriptionChangeHandler}
-        />{" "}
-        <TextField
-          margin="normal"
-          required
-          sx={{ width: "80%" }}
-          id="Location"
-          label="Location"
-          name="Location"
-          autoFocus
-          onChange={locationChangeHandler}
-        />
-        <TextField
-          margin="normal"
-          required
-          sx={{ width: "80%" }}
-          id="Participants"
-          label="Participants"
-          name="Participants"
-          autoFocus
-          onChange={participantsChangeHandler}
-        />{" "}
-        <TextField
-          margin="normal"
-          required
-          sx={{ width: "80%" }}
-          id="UnableAttend"
-          label="Unable Attendant Participants"
-          name="UnableAttend"
-          autoFocus
-          onChange={unableAttendChangeHandler}
-        />{" "}
-        {/* <Box fullwidth sx={{  justifyContent: 'center'}}>
+  if (!loadingState) {
+    return (
+      <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
+        <Paper sx={{ minWidth: 275, p: 1, m: 1 }}>
+          <Typography variant="h3" component="h2" sx={{ m: 3 }}>
+            Upload File
+          </Typography>{" "}
+          <Box
+            component="form"
+            noValidate
+            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+          >
+            <TextField
+              margin="normal"
+              required
+              sx={{ width: "80%" }}
+              id="Title"
+              label="Title"
+              name="Title"
+              autoFocus
+              onChange={titleChangeHandler}
+            />{" "}
+            <TextField
+              margin="normal"
+              required
+              sx={{ width: "80%" }}
+              id="Description"
+              label="Description"
+              name="Description"
+              autoFocus
+              onChange={descriptionChangeHandler}
+            />{" "}
+            <TextField
+              margin="normal"
+              required
+              sx={{ width: "80%" }}
+              id="Location"
+              label="Location"
+              name="Location"
+              autoFocus
+              onChange={locationChangeHandler}
+            />
+            <TextField
+              margin="normal"
+              required
+              sx={{ width: "80%" }}
+              id="Participants"
+              label="Participants"
+              name="Participants"
+              autoFocus
+              onChange={participantsChangeHandler}
+            />{" "}
+            <TextField
+              margin="normal"
+              required
+              sx={{ width: "80%" }}
+              id="UnableAttend"
+              label="Unable Attendant Participants"
+              name="UnableAttend"
+              autoFocus
+              onChange={unableAttendChangeHandler}
+            />{" "}
+            {/* <Box fullwidth sx={{  justifyContent: 'center'}}>
         <FileUploader
           handleChange={handleChange}
           name="file"
           types={fileTypes}
         
         /></Box> */}{" "}
-        <br />
-        <label htmlFor="upload-File">
-          <input
-            style={{ display: "none" }}
-            id="upload-File"
-            name="upload-File"
-            type="file"
-            onChange={saveFile}
-            required
-          />
-          <Button
-            // fullWidth
-            color="secondary"
-            variant="contained"
-            component="span"
-            sx={{ mt: 3, mb: 2, color: "white" }}
-          >
-            Choose Upload File  (Format: MP3 ONLY)
-          </Button>
-        </label>
-        <br />
-        <Button type="submit" variant="contained" sx={{ mt: 1, mb: 1 }} disabled={!formIsValid}>
-          Upload File
-        </Button>
-      </Box>
-      </Paper>
-    </Container>
-  );} else{
-      return(
-        <Loading />
-      )
+            <br />
+            <label htmlFor="upload-File">
+              <input
+                style={{ display: "none" }}
+                id="upload-File"
+                name="upload-File"
+                type="file"
+                onChange={saveFile}
+                required
+              />
+              <Button
+                // fullWidth
+                color="secondary"
+                variant="contained"
+                component="span"
+                sx={{ mt: 3, mb: 2, color: "white" }}
+              >
+                Choose Upload File (Format: MP3 ONLY)
+              </Button>
+            </label>
+            <br />
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 1, mb: 1 }}
+              disabled={!formIsValid}
+            >
+              Upload File
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    );
+  } else {
+    return <Loading />;
   }
 };
 

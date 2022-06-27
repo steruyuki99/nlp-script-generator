@@ -13,6 +13,8 @@ import SignIn from "./Page/SignIn";
 import Result from "./Page/Result";
 import Dashboard from "./Page/Dashboard";
 import ResetPassword from "./Page/ResetPassword";
+import UpdateEmail from "./Page/UpdateEmail";
+import UpdatePassword from "./Page/UpdatePassword";
 
 const theme = createTheme({
   typography: {
@@ -43,6 +45,8 @@ function App() {
             <Route path="userprofile" element={<Userprofile />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="reset" element={<ResetPassword />} />
+            <Route path="updateEmail" element={<UpdateEmail />} />
+            <Route path="updatePassword" element={<UpdatePassword />} />
           </Routes>
         </BrowserRouter>
       </div>

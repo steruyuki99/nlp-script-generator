@@ -44,7 +44,7 @@ export default function Userprofile() {
   
   const [usernameTouched, setUsernameTouched] = useState(false);
 
-  const enteredNameIsValid = username.trim() !== "";
+  const enteredNameIsValid = username.trim() !== '';
   const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
 
  
@@ -139,6 +139,24 @@ export default function Userprofile() {
               />
             </Grid> */}
           </Grid>
+          <Button
+            fullWidth
+            // maxWidth="xs"
+            variant="outlined"
+            sx={{ mt: 3, mb: 2 }}
+            href="/updateEmail"
+          >
+            Update Email
+          </Button>
+          <Button
+            fullWidth
+            // maxWidth="xs"
+            variant="outlined"
+            sx={{ mt: 3, mb: 2 }}
+            href="/updatePassword"
+          >
+            Update Password
+          </Button>
           <Button
             type="submit"
             fullWidth

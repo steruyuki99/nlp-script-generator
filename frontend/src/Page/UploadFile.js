@@ -11,6 +11,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const UploadFile = () => {
   const [userID, setUserID] = useState("");
@@ -22,6 +23,7 @@ const UploadFile = () => {
   const [file, setFile] = useState();
   const [fileName, setFileName] = useState("");
   const [fileIsValid, setFileValid] = useState(false);
+  const [loadingState, setLoading] = useState(false);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -253,6 +255,7 @@ const UploadFile = () => {
       });
   };
 
+  if(loadingState){
   return (
     <Container component="section" maxWidth="md" sx={{ marginTop: "12vh" }}>
       <Paper sx={{ minWidth: 275, p: 1, m: 1}}>
@@ -345,7 +348,11 @@ const UploadFile = () => {
       </Box>
       </Paper>
     </Container>
-  );
+  );} else{
+      return(
+        <Loading />
+      )
+  }
 };
 
 export default UploadFile;

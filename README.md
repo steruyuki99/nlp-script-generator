@@ -12,6 +12,7 @@ npm install react-router-dom
 npm i --save react-drag-drop-files
 npm install firebase
 npm install --save react-audio-player
+npm i react-loading
 
 #### Materail-UI Package
 npm install @mui/material @emotion/react @emotion/styled

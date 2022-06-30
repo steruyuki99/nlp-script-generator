@@ -32,7 +32,7 @@ export default function UpdatePassword() {
     console.log("Submittt");
     function uPassword() {
       return new Promise((resolve) => {
-        updatePassword(auth, password)
+        updatePassword(auth.currentUser, password)
           .then(() => {
             alert("Password Update!");
           })
@@ -50,7 +50,7 @@ export default function UpdatePassword() {
       console.log(user);
       setPassword("");
       setPasswordTouched("");
-      navigate("");
+      navigate("../userprofile");
     });
   };
   return (

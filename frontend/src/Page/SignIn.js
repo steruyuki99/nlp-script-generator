@@ -67,7 +67,7 @@ export default function SignIn() {
     setPasswordTouched(true);
   };
 
-  if ( emailIsValid && passwordIsValid) {
+  if (emailIsValid && passwordIsValid) {
     formIsValid = true;
   }
   const handleSubmit = (event) => {
@@ -87,11 +87,13 @@ export default function SignIn() {
                 resolve(user);
               })
               .catch((err) => {
+                alert(err.message);
                 console.log(err);
               });
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       });
     }
@@ -101,7 +103,7 @@ export default function SignIn() {
       navigate("../list");
     });
   };
-  
+
   return (
     <Grid container component="main" sx={{ height: "90vh", marginTop: "10vh" }}>
       <CssBaseline />
@@ -130,78 +132,76 @@ export default function SignIn() {
         elevation={6}
         square
       >
-      
-          <Paper
-            sx={{
-              my: 8,
-              mx: 4,
-              p:5,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-            backgroundColor="white"
-
+        <Paper
+          sx={{
+            my: 8,
+            mx: 4,
+            p: 5,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          backgroundColor="white"
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h4" className={classes.title}>
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 1 }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h4" className={classes.title}>
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={emailChangeHandler}
+              onBlur={emailBlurHandler}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              disabled={!formIsValid}
             >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                onChange={emailChangeHandler}
-                onBlur={emailBlurHandler}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={passwordChangeHandler}
-                onBlur={passwordBlurHandler}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={!formIsValid}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="/reset" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/register" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="/reset" variant="body2">
+                  Forgot password?
+                </Link>
               </Grid>
-            </Box>
-          </Paper>
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Paper>
       </Grid>
     </Grid>
   );

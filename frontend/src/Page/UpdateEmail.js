@@ -33,7 +33,7 @@ export default function UpdateEmail() {
     console.log("Submittt");
     function rPassword() {
       return new Promise((resolve) => {
-        updateEmail(auth, email)
+        updateEmail(auth.currentUser, email)
           .then(() => {
             alert("Your email was updated");
           })
@@ -51,7 +51,7 @@ export default function UpdateEmail() {
       console.log(user);
       setEmail("");
       setEmailTouched("");
-      navigate("");
+      navigate("../userprofile");
     });
   };
   return (

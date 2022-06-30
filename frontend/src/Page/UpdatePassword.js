@@ -35,6 +35,7 @@ export default function UpdatePassword() {
         updatePassword(auth.currentUser, password)
           .then(() => {
             alert("Password Update!");
+            resolve();
           })
           .catch((error) => {
             const errorCode = error.code;

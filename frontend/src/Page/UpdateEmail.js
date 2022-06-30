@@ -36,6 +36,7 @@ export default function UpdateEmail() {
         updateEmail(auth.currentUser, email)
           .then(() => {
             alert("Your email was updated");
+            resolve();
           })
           .catch((error) => {
             const errorCode = error.code;

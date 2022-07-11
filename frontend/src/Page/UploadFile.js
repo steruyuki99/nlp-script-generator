@@ -42,11 +42,11 @@ const UploadFile = () => {
     }
   }, []);
 
-  const [titleTouched, setTitleTouched] = useState(false);
-  const [descriptionTouched, setDescriptionTouched] = useState(false);
-  const [locationTouched, setLocationTouched] = useState(false);
-  const [participantsTouched, setParticipantsTouched] = useState(false);
-  const [unparticipantsTouched, setUnparticipantsTouched] = useState(false);
+  // const [titleTouched, setTitleTouched] = useState(false);
+  // const [descriptionTouched, setDescriptionTouched] = useState(false);
+  // const [locationTouched, setLocationTouched] = useState(false);
+  // const [participantsTouched, setParticipantsTouched] = useState(false);
+  // const [unparticipantsTouched, setUnparticipantsTouched] = useState(false);
 
   const enteredTitleIsValid = title.trim() !== "";
   const enteredDescriptionIsValid = description.trim !== "";
@@ -133,8 +133,8 @@ const UploadFile = () => {
             console.log(res.data.path);
             console.log(res.data.path.path);
             const filepath = res.data.path.path;
-            const minutesText =
-              res.data.results.result.results[0].alternatives[0].transcript;
+            // const minutesText =
+            //   res.data.results.result.results[0].alternatives[0].transcript;
             console.log(res.data.result);
             const dialog = generateDialog(res.data.results);
             const resObj = { dialog: dialog, filepath: filepath };
@@ -229,10 +229,10 @@ const UploadFile = () => {
           console.log(fullDialog);
           console.log(fulltext);
           str = "";
-          var crrSp = result.result.speaker_labels[i].speaker;
+          crrSp = result.result.speaker_labels[i].speaker;
         }
         if (
-          result.result.results[j].alternatives[0].timestamps[k][1] ==
+          result.result.results[j].alternatives[0].timestamps[k][1] ===
           result.result.speaker_labels[i].from
         ) {
           //to add data in to the specific array
@@ -253,7 +253,7 @@ const UploadFile = () => {
           console.log(fullDialog);
           console.log(fulltext);
           str = "";
-          var crrSp = result.result.speaker_labels[i].speaker;
+          crrSp = result.result.speaker_labels[i].speaker;
         }
         k++;
         i++;

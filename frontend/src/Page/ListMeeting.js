@@ -125,6 +125,8 @@ const ListMeeting = () => {
               } else if(d.title.toLowerCase().includes(search.toLocaleLowerCase())){
                 console.log(d);
                 return d;
+              } else{
+                return d;
               }
             }
           ).map((d, idx) => {

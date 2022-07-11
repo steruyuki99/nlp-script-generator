@@ -9,7 +9,7 @@ export default function UpdatePassword() {
 
   let navigate = useNavigate();
 
-  const [passwordTouched, setPasswordTouched] = useState(false);
+  // const [passwordTouched, setPasswordTouched] = useState(false);
 
   const passwordIsValid = password.trim !== "";
 
@@ -19,9 +19,9 @@ export default function UpdatePassword() {
     setPassword(event.target.value);
   };
 
-  const passwordBlurHandler = () => {
-    setPasswordTouched(true);
-  };
+  // const passwordBlurHandler = () => {
+  //   setPasswordTouched(true);
+  // };
 
   if (passwordIsValid) {
     formIsValid = true;
@@ -50,7 +50,7 @@ export default function UpdatePassword() {
     uPassword().then((user) => {
       console.log(user);
       setPassword("");
-      setPasswordTouched("");
+      // setPasswordTouched("");
       navigate("../userprofile");
     });
   };
@@ -83,9 +83,9 @@ export default function UpdatePassword() {
                   id="password"
                   label="Password"
                   name="password"
-                  autoComplete="email"
+                  type="password"
                   onChange={passwordChangeHandler}
-                  onBlur={passwordBlurHandler}
+                  // onBlur={passwordBlurHandler}
                 />
               </Grid>{" "}
               <Button

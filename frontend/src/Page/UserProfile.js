@@ -3,21 +3,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from '@mui/material/Card';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { signOut, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
-const theme = createTheme();
 
 export default function Userprofile() {
   const [user, setUser] = useState("");
@@ -42,10 +37,10 @@ export default function Userprofile() {
   }, []);
 
   
-  const [usernameTouched, setUsernameTouched] = useState(false);
+  // const [usernameTouched, setUsernameTouched] = useState(false);
 
   const enteredNameIsValid = username.trim() !== '';
-  const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
+  // const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
 
  
   let formIsValid = false;
@@ -55,9 +50,9 @@ export default function Userprofile() {
     setUsername(event.target.value);
   };
 
-  const usernameBlurHandler = (event) => {
-    setUsernameTouched(true);
-  };
+  // const usernameBlurHandler = (event) => {
+  //   setUsernameTouched(true);
+  // };
 
   if (enteredNameIsValid) {
     formIsValid = true;
@@ -70,7 +65,7 @@ export default function Userprofile() {
       displayName: username,
     }).then(()=>{
       setUsername("");
-      setUsernameTouched(false);
+      // setUsernameTouched(false);
       navigate("../userprofile");
     })
   };
@@ -112,7 +107,7 @@ export default function Userprofile() {
                 defaultValue={user.displayName}
                 value={username}
                 onChange={usernameChangeHandler}
-                onBlur={usernameBlurHandler}
+                // onBlur={usernameBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>

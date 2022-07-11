@@ -8,7 +8,7 @@ import {
   Grid,
   Box,
   Typography,
-  Container,
+  Container
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
@@ -23,18 +23,19 @@ export default function Register() {
   const [password, setPassword] = useState("");
   let navigate = useNavigate();
 
-  const [usernameTouched, setUsernameTouched] = useState(false);
-  const [emailTouched, setEmailTouched] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
+  // const [usernameTouched, setUsernameTouched] = useState(false);
+  // const [emailTouched, setEmailTouched] = useState(false);
+  // const [passwordTouched, setPasswordTouched] = useState(false);
+  const [passwordIsValid, setPasswordValid]  = useState(false);
 
   const enteredNameIsValid = username.trim() !== "";
-  const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
+  // const usernameInputIsValid = !enteredNameIsValid && usernameTouched;
 
   const emailIsValid = email.includes("@");
-  const emailInputIsValid = !emailIsValid && emailTouched;
+  // const emailInputIsValid = !emailIsValid && emailTouched;
 
-  const passwordIsValid = password.trim() !== "";
-  const passwordInputIsValid = !passwordIsValid && passwordTouched;
+  // const passwordIsValid = password.trim() !== "";
+  // const passwordInputIsValid = !passwordIsValid && passwordTouched;
 
   let formIsValid = false;
 
@@ -42,23 +43,43 @@ export default function Register() {
     setUsername(event.target.value);
   };
 
-  const usernameBlurHandler = (event) => {
-    setUsernameTouched(true);
-  };
+  // const usernameBlurHandler = (event) => {
+  //   setUsernameTouched(true);
+  // };
 
-  const emailBlurHandler = (event) => {
-    setEmailTouched(true);
-  };
+  // const emailBlurHandler = (event) => {
+  //   setEmailTouched(true);
+  // };
 
-  const passwordBlurHandler = (event) => {
-    setPasswordTouched(true);
-  };
+  // const passwordBlurHandler = (event) => {
+  //   setPasswordTouched(true);
+  // };
   const emailChangeHandler = (event) => {
     setEmail(event.target.value);
   };
 
   const passwordChangeHandler = (event) => {
     setPassword(event.target.value);
+
+    const uppercaseRegExp   = /(?=.*?[A-Z])/;
+    const lowercaseRegExp   = /(?=.*?[a-z])/;
+    const digitsRegExp      = /(?=.*?[0-9])/;
+    // const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    // const minLengthRegExp   = /.{8,}/;
+
+    const passwordLength =      password.length;
+    const uppercasePassword =   uppercaseRegExp.test(password);
+    const lowercasePassword =   lowercaseRegExp.test(password);
+    const digitsPassword =      digitsRegExp.test(password);
+
+    console.log(passwordLength);
+    console.log(uppercasePassword);
+    console.log(lowercasePassword);
+    console.log(passwordIsValid);
+    if(passwordLength > 0 && uppercasePassword && lowercasePassword  && digitsPassword){
+      setPasswordValid(true);
+    }
+    
   };
 
   if (enteredNameIsValid && emailIsValid && passwordIsValid) {
@@ -83,6 +104,7 @@ export default function Register() {
           })
           .catch((err) => {
             console.log("Error on create user ", err);
+            alert(err.message);
           });
       });
     }
@@ -98,6 +120,7 @@ export default function Register() {
           })
           .catch((err) => {
             console.log(err);
+            alert(err.message);
           });
       });
     }
@@ -149,9 +172,9 @@ export default function Register() {
         setUsername("");
         setEmail("");
         setPassword("");
-        setUsernameTouched(false);
-        setEmailTouched(false);
-        setPasswordTouched(false);
+        // setUsernameTouched(false);
+        // setEmailTouched(false);
+        // setPasswordTouched(false);
       });
   };
 
@@ -183,7 +206,7 @@ export default function Register() {
                 name="username"
                 autoComplete="username"
                 onChange={usernameChangeHandler}
-                onBlur={usernameBlurHandler}
+                // onBlur={usernameBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -195,7 +218,7 @@ export default function Register() {
                 name="email"
                 autoComplete="email"
                 onChange={emailChangeHandler}
-                onBlur={emailBlurHandler}
+                // onBlur={emailBlurHandler}
               />
             </Grid>
             <Grid item xs={12}>
@@ -208,7 +231,7 @@ export default function Register() {
                 id="password"
                 autoComplete="new-password"
                 onChange={passwordChangeHandler}
-                onBlur={passwordBlurHandler}
+                // onBlur={passwordBlurHandler}
               />
             </Grid>
           </Grid>

@@ -3,7 +3,6 @@ import "./App.css";
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { green, purple } from "@mui/material/colors";
 import Header from "./Components/Header/Header";
 import ListMeeting from "./Page/ListMeeting";
 import Register from "./Page/Register";
@@ -11,7 +10,7 @@ import UploadFile from "./Page/UploadFile";
 import Userprofile from "./Page/UserProfile";
 import SignIn from "./Page/SignIn";
 import Result from "./Page/Result";
-import Dashboard from "./Page/Dashboard";
+// import Dashboard from "./Page/Dashboard";
 import ResetPassword from "./Page/ResetPassword";
 import UpdateEmail from "./Page/UpdateEmail";
 import UpdatePassword from "./Page/UpdatePassword";
@@ -43,7 +42,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="upload" element={<UploadFile />} />
             <Route path="userprofile" element={<Userprofile />} />
-            <Route path="dashboard" element={<Dashboard />} />
+            {/* <Route path="dashboard" element={<Dashboard />} /> */}
             <Route path="reset" element={<ResetPassword />} />
             <Route path="updateEmail" element={<UpdateEmail />} />
             <Route path="updatePassword" element={<UpdatePassword />} />

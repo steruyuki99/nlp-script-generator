@@ -220,7 +220,7 @@ const UploadFile = () => {
         // setCrrSpeaker(result.result.speaker_labels[i].speaker);
         console.log(crrSp);
         console.log(result.result.speaker_labels[i].speaker);
-        if (crrSp != result.result.speaker_labels[i].speaker) {
+        if (crrSp !== result.result.speaker_labels[i].speaker) {
           const dialog = {
             speaker: result.result.speaker_labels[i].speaker,
             text: str,

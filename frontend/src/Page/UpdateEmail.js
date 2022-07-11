@@ -9,7 +9,7 @@ export default function UpdateEmail() {
 
   let navigate = useNavigate();
 
-  const [emailTouched, setEmailTouched] = useState(false);
+  // const [emailTouched, setEmailTouched] = useState(false);
 
   const emailIsValid = email.includes("@");
 
@@ -20,9 +20,9 @@ export default function UpdateEmail() {
     console.log(email);
   };
 
-  const emailBlurHandler = () => {
-    setEmailTouched(true);
-  };
+  // const emailBlurHandler = () => {
+  //   setEmailTouched(true);
+  // };
 
   if (emailIsValid) {
     formIsValid = true;
@@ -51,7 +51,7 @@ export default function UpdateEmail() {
     rPassword().then((user) => {
       console.log(user);
       setEmail("");
-      setEmailTouched("");
+      // setEmailTouched("");
       navigate("../userprofile");
     });
   };
@@ -64,7 +64,12 @@ export default function UpdateEmail() {
         alignItems="center"
         justifyContent="center"
       >
-        <Grid item xs={3}>
+        <Grid item xs={3}           style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column"
+          }}>
           <Card sx={{ minWidth: 400, p: 2, mt: 3 }}>
             <Box
               component="form"
@@ -86,7 +91,7 @@ export default function UpdateEmail() {
                   name="email"
                   autoComplete="email"
                   onChange={emailChangeHandler}
-                  onBlur={emailBlurHandler}
+                  // onBlur={emailBlurHandler}
                 />
               </Grid>{" "}
               <Button

@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 //firebase
-import { doc, getDoc, deleteDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 
 export default function Result() {
@@ -23,6 +23,7 @@ export default function Result() {
   const [participants, setParticipants] = useState("");
   const [unableAttend, setUnableAttend] = useState("");
   const [filepath, setFilePath] = useState("");
+  const [crrUser, setCrrUser] = useState("");
   // const [suid, setUID] = useState("");
   const [dialog, setDialog] = useState([]);
   let { minutesID } = useParams();
@@ -33,6 +34,9 @@ export default function Result() {
 
   useEffect(() => {
     const docRef = doc(db, "minutes", minutesId);
+    const user = auth.currentUser;
+    setCrrUser(user);
+    
     getDoc(docRef)
       .then((response) => {
         console.log(response.data());
@@ -240,6 +244,7 @@ export default function Result() {
           component="span"
           sx={{ mt: 3, mb: 2, color: "white" }}
           onClick={handledelete}
+          disabled={!crrUser}
         >
           DELETE THIS SCRIPT
         </Button>

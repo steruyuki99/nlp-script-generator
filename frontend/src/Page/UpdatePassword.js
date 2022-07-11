@@ -6,17 +6,36 @@ import { auth } from "../firebase";
 
 export default function UpdatePassword() {
   const [password, setPassword] = useState("");
+  const [passwordIsValid, setPasswordValid]  = useState(false);
 
   let navigate = useNavigate();
 
   // const [passwordTouched, setPasswordTouched] = useState(false);
 
-  const passwordIsValid = password.trim !== "";
+  // const passwordIsValid = password.trim !== "";
 
   let formIsValid = false;
 
   const passwordChangeHandler = (event) => {
     setPassword(event.target.value);
+    const uppercaseRegExp   = /(?=.*?[A-Z])/;
+    const lowercaseRegExp   = /(?=.*?[a-z])/;
+    const digitsRegExp      = /(?=.*?[0-9])/;
+    // const specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    // const minLengthRegExp   = /.{8,}/;
+
+    const passwordLength =      password.length;
+    const uppercasePassword =   uppercaseRegExp.test(password);
+    const lowercasePassword =   lowercaseRegExp.test(password);
+    const digitsPassword =      digitsRegExp.test(password);
+
+    console.log(passwordLength);
+    console.log(uppercasePassword);
+    console.log(lowercasePassword);
+    console.log(passwordIsValid);
+    if(passwordLength > 0 && uppercasePassword && lowercasePassword  && digitsPassword){
+      setPasswordValid(true);
+    }
   };
 
   // const passwordBlurHandler = () => {

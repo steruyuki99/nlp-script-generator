@@ -7,7 +7,7 @@ npm i -D nodemon
 npm install ibm-watson@^7.0.0
 
 ### Frontend (React.JS)
-npm i axios
+    npm i axios
 npm install react-router-dom
 npm i --save react-drag-drop-files
 npm install firebase

@@ -50,7 +50,7 @@ export default function ResetPassword() {
       console.log(user);
       setEmail("");
       // setEmailTouched("");
-      navigate("");
+      navigate("../");
     });
   };
   return (

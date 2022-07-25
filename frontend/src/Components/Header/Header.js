@@ -151,7 +151,7 @@ export default function Header() {
       ()=>{
        navigate(`/list`);
       } }>
-      Minutes Of Meeting Generator
+      Conversation Script Generator
     </Typography>
   );
 

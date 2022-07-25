@@ -217,7 +217,6 @@ const UploadFile = () => {
           j++;
           fulltext += result.result.results[j].alternatives[0].transcript;
         }
-        // setCrrSpeaker(result.result.speaker_labels[i].speaker);
         console.log(crrSp);
         console.log(result.result.speaker_labels[i].speaker);
         if (crrSp !== result.result.speaker_labels[i].speaker) {

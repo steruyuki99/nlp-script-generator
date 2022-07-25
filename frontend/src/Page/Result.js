@@ -177,7 +177,7 @@ export default function Result() {
         }}
       >
         <Typography variant="h4" component="h5" sx={{ m: 3 }}>
-          Minutes
+          Record
         </Typography>
         <TableContainer component={Paper} sx={{ maxWidth: 800 }} elevation={2}>
           <Table aria-label="simple table">
